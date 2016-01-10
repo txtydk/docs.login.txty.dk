@@ -1,4 +1,8 @@
 <div class="col-sm-10">
+	{% if page.deprecated == 1 %}
+		<div class="alert alert-danger"><strong>Please be aware that this version is deprecated.</strong></div>
+	{% endif %}
+
 	{% assign categoriesPostVersion = page.version | downcase %}
 	{% for post in site.categories.[categoriesPostVersion] reversed %}
 		<div id="{{ post.url | remove: '/' }}">
