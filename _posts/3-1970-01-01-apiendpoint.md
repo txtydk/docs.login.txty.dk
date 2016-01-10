@@ -1,6 +1,5 @@
 ---
 category: 3
-permalink: :title
 layout: post
 title: API endpoint
 ---

@@ -1,6 +1,5 @@
 ---
 category: 4
-permalink: :title
 layout: post
 title: Your prices & consumption
 ---
