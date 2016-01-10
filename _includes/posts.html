@@ -1,5 +1,5 @@
 <div class="col-sm-10">
-	{% if page.deprecated == 1 %}
+	{% if page.deprecated == false %}
 		<div class="alert alert-danger"><strong>Please be aware that this version is deprecated.</strong></div>
 	{% endif %}
 
@@ -10,6 +10,6 @@
 			{{ post.content }}
 		</div>
 
-		<br /><br />
+		<br><br>
 	{% endfor %}
 </div>
