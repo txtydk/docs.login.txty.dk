@@ -1,0 +1,10 @@
+# Exclude files
+exclude: [Makefile]
+excerpt_separator: ""
+
+
+
+# Webpage
+title: 'API documentation'
+baseurl: '/'
+assets: 'assets/'

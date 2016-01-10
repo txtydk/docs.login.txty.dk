@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="da">
+	{% include header.html %}
+	<body>
+
+		{% if page.version > 0 %}
+			<nav class="navbar navbar-dark navbar-fixed-top bg-inverse">
+				<div class="container">
+					<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">
+						&#9776;
+					</button>
+					<div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
+						<ul class="nav navbar-nav">
+							{% for category in site.categories %}
+								<li class="nav-item">
+									<a class="nav-link" href="/{{ category | first }}/">Version {{ category | first }}</a>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<div class="jumbotron intro {% if page.version > 0 %}m-t-3{% endif %} p-a-2">
+				<div class="container">
+					<h1>Version <strong>{{ page.version }}</strong></h1>
+				</div>
+			</div>
+		{% else %}
+			<div class="p-a-3"></div>
+		{% endif %}
+
+		<div class="container">
+			{{ content }}
+		</div>
+
+		{% include javascripts.html %}
+
+	</body>
+</html>

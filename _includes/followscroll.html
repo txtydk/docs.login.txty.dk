@@ -1,0 +1,12 @@
+<div class="col-sm-2 hidden-sm-down follow-scroll">
+	<ul class="nav">
+		{% assign categoriesPostVersion = page.version | downcase %}
+		{% for post in site.categories.[categoriesPostVersion] reversed %}
+			{% if forloop.first == true %}
+				<li><a target="{{ post.url | remove_first: '/' }}"><strong>{{ post.title }}</strong></a></li>
+			{% else %}
+				<li><a target="{{ post.url | remove_first: '/' }}">{{ post.title }}</a></li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+</div>
