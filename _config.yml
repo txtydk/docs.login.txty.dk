@@ -4,6 +4,11 @@ excerpt_separator: ""
 
 
 
+# Permalinks
+permalink: '/:title/'
+
+
+
 # Webpage
 title: 'API documentation'
 baseurl: '/'
