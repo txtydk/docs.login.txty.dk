@@ -5,7 +5,7 @@ excerpt_separator: ""
 
 
 # Permalinks
-permalink: '/posts.html'
+permalink: '/:title/'
 
 
 
