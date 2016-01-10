@@ -2,12 +2,9 @@
 <html lang="da">
 	{% include header.html %}
 	<body>
-
 		<nav class="navbar navbar-dark navbar-fixed-top bg-inverse">
 			<div class="container">
-				<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">
-					&#9776;
-				</button>
+				<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">&#9776;</button>
 				<div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
 					<ul class="nav navbar-nav">
 						{% for category in site.categories %}
@@ -31,6 +28,5 @@
 		</div>
 
 		{% include javascripts.html %}
-
 	</body>
 </html>

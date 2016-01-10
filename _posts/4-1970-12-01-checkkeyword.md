@@ -28,7 +28,7 @@ $ /buy/checkkeyword/api.json?gateway=1919&keyword=pacman
 	}
 }
 </pre></div>
-<br />
+<br>
 
 
 
@@ -41,7 +41,7 @@ $ /buy/checkkeyword/api.json?gateway=1919&keyword=pacman
 	"error": "KEYWORD_EXISTS"
 }
 </pre></div>
-<br />
+<br>
 
 
 
@@ -52,8 +52,8 @@ $ /buy/checkkeyword/api.json?gateway=1919&keyword=pacman
 </h3>
 
 
-<span class="text-primary">gateway</span><br />
+<span class="text-primary">gateway</span><br>
 <span class="m-l-2">The gateway, typically 1919, or your hosted SIM-card MSISDN.</span>
 
-<span class="text-primary">keyword</span><br />
+<span class="text-primary">keyword</span><br>
 <span class="m-l-2">The keyword you want to lookup.</span>
