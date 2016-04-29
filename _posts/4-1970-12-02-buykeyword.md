@@ -17,6 +17,10 @@ $ /buy/keyword/api.json?gateway=1919&keyword=test
 </pre></div>
 <br>
 
+<p>
+	<strong>All call to 'buy/keyword' are final. You will receive an invoice if the price are greater than 0.00. You can check the price with the 'Check keyword'-endpoint.</strong>
+</p>
+
 
 
 
