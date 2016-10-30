@@ -34,7 +34,7 @@ $ /buy/checkkeyword/api.json?gateway=1919&keyword=pacman
 
 
 
-<p>Should an error occurr, you can typically find the reason in 'error':</p>
+<p>Should an error occur, you can typically find the reason in 'error':</p>
 <div class="highlight bg-danger"><pre class="bg-danger">
 {
 	"status": "error",
