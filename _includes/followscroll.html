@@ -3,9 +3,9 @@
 		{% assign categoriesPostVersion = page.version | downcase %}
 		{% for post in site.categories.[categoriesPostVersion] reversed %}
 			{% if forloop.first == true %}
-				<li><a target="{{ post.url | remove: '/' }}"><strong>{{ post.title }}</strong></a></li>
+				<li><a href="#{{ post.url | remove: '/' }}"><strong>{{ post.title }}</strong></a></li>
 			{% else %}
-				<li><a target="{{ post.url | remove: '/' }}">{{ post.title }}</a></li>
+				<li><a href="#{{ post.url | remove: '/' }}">{{ post.title }}</a></li>
 			{% endif %}
 		{% endfor %}
 	</ul>
