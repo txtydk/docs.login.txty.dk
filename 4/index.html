@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="da">
+	<head>
+	<title>Version 4 - API documentation</title>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" type="image/png" href="/assets/img/favicon.png"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/assets/css/style.css">
+	<!--[if lt IE 9]><script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script><script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+	<body>
+		<nav class="navbar navbar-dark navbar-fixed-top bg-inverse">
+			<div class="container">
+				<button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">&#9776;</button>
+				<div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
+					<ul class="nav navbar-nav">
+						
+							<li class="nav-item">
+								<a class="nav-link" href="/3/">Version 3</a>
+							</li>
+						
+							<li class="nav-item">
+								<a class="nav-link" href="/4/">Version 4</a>
+							</li>
+						
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="jumbotron intro m-t-3 p-a-2">
+			<div class="container">
+				<h1>Version <strong>4</strong></h1>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+	<div class="col-sm-10">
+	
+
+	
+	
+		<div id="401-apiendpoint">
+			<h2>API endpoint</h2>
+			<p>
+	Txty only operate with one endpoint:
+</p>
+
+<h4>
+	<span class="label label-warning">GET / POST</span>
+	<a href="https://login.txty.dk/api/4/" target="_blank">
+		<span class="label label-primary">https://login.txty.dk/api/4/</span>
+	</a>
+</h4>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-login">
+			<h2>Login</h2>
+			<p>You login with the password and obtain an API key that you use for further communication with the API.</p>
+<p>This only needs to be done <strong>once</strong>. When calling the API further on use the generated key.</p>
+<div class="highlight"><pre>
+$ /user/newapikey/login.json?user=username&amp;pass=password&amp;description=YourAPP
+{
+	"status": "success",
+	"success": "ADDED_KEY",
+	"newapikey": {
+		"controlapikey": 0,
+		"key": "dcHZ2TXvMV"
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<p>In case the user has two-factor-authentication activated, which will send a code to the users phone, you will get this response:</p>
+<div class="highlight"><pre>
+{
+	"status": "success",
+	"success": "ADDED_TF"
+}
+</pre></div>
+<p><br /></p>
+
+<p>You provide a screen that takes the users code and make a new request:</p>
+<div class="highlight"><pre>
+$ /user/newapikey/login.json?user=username&amp;pass=password&amp;description=YourAPP&amp;tfkey=1234
+{
+	"status": "success",
+	"success": "ADDED_KEY",
+	"newapikey": {
+		"controlapikey": 0,
+		"key": "NGsfRk97bL"
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<p>If something is wrong with username, password or tfkey the response will be:</p>
+<div class="highlight bg-danger"><pre class="bg-danger">
+{
+	"status": "error",
+	"error": "USER_NOT_FOUND",
+	"login": {
+		"user": "username",
+		"pass": "password"
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<p>You have to append your username and key to every query you are making. Here is an example of querying your personal information:</p>
+<div class="highlight"><pre>
+$ /view/user/api.json?user=username&amp;key=key
+</pre></div>
+<p><br /></p>
+
+<h3>
+	<span class="label label-default">Required</span>
+</h3>
+
+<p><span class="text-primary">user</span><br />
+<span class="m-l-2">The provided username</span></p>
+
+<p><span class="text-primary">key</span><br />
+<span class="m-l-2">The provided key.</span><br />
+<span class="m-l-2">Can be generated automatically using ‘Login’.</span></p>
+
+<p><span class="text-primary">format</span><br />
+<span class="m-l-2">Change output format by switching file suffix. Fx. api.[json, xml]</span></p>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-logout">
+			<h2>Logout</h2>
+			<p>When you logout of your app, webapplication or whatever you have, you can delete the key again.</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /user/deleteapikey/api.json?user=username&amp;key=key&amp;apikey=key
+{
+	"status": "success",
+	"success": "DELETE_APIKEY"
+}
+</pre></div>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-user">
+			<h2>User</h2>
+			<p>You can request the users personal information.</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /view/user/api.json
+{
+	"status": "success",
+	"success": "VIEW_USER",
+	"user": {
+		"controluser": 0,
+		"username": "username",
+		"status": 10,
+		"companyname": "Company",
+		"companyid": 00000000,
+		"eannumber": null,
+		"fullname": "Fullname",
+		"street": "Street",
+		"zipcode": 5550,
+		"msisdn": 4512345678,
+		"dialcode": 45,
+		"number": 12345678,
+		"email": "your@email.tld",
+		"lockedname": null,
+		"createdtime": 1361830863,
+		"iplast_login": "127.0.0.1",
+		"iplast_gw": "127.0.0.1",
+		"timestamp_login": 1394326632,
+		"timestamp_gw": 1393975152,
+		"callback": "http://provider.dk/ka/",
+		"bcontactid": null
+	}
+}
+</pre></div>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-outbox">
+			<h2>Outbox</h2>
+			<p>This is an example of your outbox. Your messages will be in 'outbox' and easy to iterate.</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /view/outbox/api.json
+{
+	"status": "success",
+	"success": "VIEW_OUTBOX",
+	"outbox": [
+		{
+			"smsid": 0,
+			"controluser": 0,
+			"username": "username",
+			"msisdn": 4512345678,
+			"dialcode": 45,
+			"number": 12345678,
+			"sender": "You",
+			"sent": 1394367850,
+			"received": 1394367851,
+			"scheduled": 0,
+			"price": 0.2,
+			"failed": true,
+			"error": 13,
+			"premium": 0,
+			"flash": false,
+			"wappush": null,
+			"text": "This text is on the way to you!",
+			"networkcode": null,
+			"msg-count": 1,
+			"premium-out": 0,
+			"latency": 1000,
+			"errortext": "Message terminated."
+		},
+		...
+	]
+}
+</pre></div>
+<p><br /></p>
+
+<h3>
+	<span class="label label-default">Optional</span>
+</h3>
+
+<p><span class="text-primary">search</span><br />
+<span class="m-l-2">Search parameter</span></p>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-inbox">
+			<h2>Inbox</h2>
+			<p>This is an example of your inbox. Your messages will be in 'inbox' and easy to iterate.</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /view/inbox/api.json
+{
+	"status": "success",
+	"success": "VIEW_INBOX",
+	"inbox": [
+		{
+			"smsid": 0,
+			"controluser": 0,
+			"username": "username",
+			"msisdn": 4512345678,
+			"dialcode": 45,
+			"number": 12345678,
+			"received": 1393799104,
+			"keyword": "gateway",
+			"gateway": 1919,
+			"network": "dk.telia",
+			"text": "hey",
+			"msg-count": 1,
+			"contact": {
+				"controlcontact": 0,
+				"fullname": "Fullname of contactperson"
+			}
+		},
+		...
+	]
+}
+</pre></div>
+<p><br /></p>
+
+<h3>
+	<span class="label label-default">Optional</span>
+</h3>
+
+<p><span class="text-primary">search</span><br />
+<span class="m-l-2">Search parameter</span></p>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-sendsms">
+			<h2>Send SMS</h2>
+			<p>If no errors occurred, the response will be:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /sms/api.json?msisdn=4512345678&amp;sender=You&amp;text=This+text+is+on+the+way+to+you%21
+{
+	"status": "success",
+	"success": "SMS_SENT",
+	"sms": {
+		"smsid": 0,
+		"cost": 0.2,
+		"chars-count": 31,
+		"msg-count": 1
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<p>Should an error occur, you can typically find the reason in 'error':</p>
+<div class="highlight bg-danger"><pre class="bg-danger">
+{
+	"status": "error",
+	"error": "EMPTY_RECIPIENT",
+	"sms": {
+		"msisdn": null
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<h3>
+	<span class="label label-default">Required</span>
+</h3>
+
+<p><span class="text-primary">msisdn</span><br />
+<span class="m-l-2">The recipient. Mobile number in international format e.g. 4512345678</span></p>
+
+<p><span class="text-primary">text</span><br />
+<span class="m-l-2">The SMS content. UTF-8 and URL encoded value.</span></p>
+
+<p><span class="text-primary">sender</span><br />
+<span class="m-l-2">Allowed characters are a-zA-Z0-9.</span>
+<br />
+<span class="m-l-2">Max 15 numeric or max 11 alphanumeric.</span>
+<br /></p>
+
+<h3>
+	<span class="label label-default">Optional</span>
+</h3>
+
+<p><span class="text-primary">contact</span><br />
+<span class="m-l-2">The contact ID - msisdn, group will be ignored.</span></p>
+
+<p><span class="text-primary">group</span><br />
+<span class="m-l-2">The group ID - msisdn, contact will be ignored.</span></p>
+
+<p><span class="text-primary">flash</span><br />
+<span class="m-l-2">Set to ‘true’ if you want to send the SMS as a flash.</span>
+<br />
+<span class="m-l-2">Please note that not all phone or networks supports this.</span></p>
+
+<p><span class="text-primary">silent</span><br />
+<span class="m-l-2">Set to ‘true’ if you want to send the SMS silently.</span>
+<br />
+<span class="m-l-2">Please note that not all phone or networks supports this.</span></p>
+
+<p><span class="text-primary">wappush</span><br />
+<span class="m-l-2">Provide the URL that you want to push to the phone.</span>
+<br />
+<span class="m-l-2">Please note that not all phone or networks supports this.</span></p>
+
+<p><span class="text-primary">schedule</span><br />
+<span class="m-l-2">Schedule a message for later sending. The format is Unix timestamp (Timezone: Europe/Copenhagen).</span></p>
+
+<p><span class="text-primary">callback</span><br />
+<span class="m-l-2">Set an optional callback URL. This will not disable nor replace the user account specified callback.</span></p>
+
+<p><span class="text-primary">price</span><br />
+<span class="m-l-2">Set the price. Defined in øre, e.g. 1 Danish krone = 100.</span></p>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-hlrlookup">
+			<h2>HLR lookup</h2>
+			<p>If no errors occurred, the response will be:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /hlr/api.json?msisdn=4512345678
+{
+	"status": "success",
+	"success": "LOOKUP",
+	"hlr": {
+		"msisdn": 4512345678,
+		"stat": "DELIVRD",
+		"imsi": 000000000000000,
+		"mccmnc": 23820,
+		"err": 0,
+		"latest_lookup": 1394370505,
+		"original_dialcode": 45,
+		"original_country_name": "Denmark",
+		"original_network_name": "MVNO - BiBoB",
+		"original_number_prefix": 4242,
+		"ported_dialcode": 45,
+		"ported_country": "Denmark",
+		"ported_network_name": "Telia DK",
+		"ported_network_code": 23820,
+		"ported_number_prefix": 4211
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<p>Should an error occur, you can typically find the reason in 'error':</p>
+<div class="highlight bg-danger"><pre class="bg-danger">
+{
+	"status": "error",
+	"error": "EMPTY_RECIPIENT",
+	"hlr": {
+		"msisdn": null
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<h3>
+	<span class="label label-default">Required</span>
+</h3>
+
+<p><span class="text-primary">msisdn</span><br />
+<span class="m-l-2">The recipient. Mobile number in international format fx. 4512345678</span>
+<br /></p>
+
+<h3>
+	<span class="label label-default">Optional</span>
+</h3>
+
+<p><span class="text-primary">contact</span><br />
+<span class="m-l-2">The contact ID - msisdn, group will be ignored.</span></p>
+
+<p><span class="text-primary">group</span><br />
+<span class="m-l-2">The group ID - msisdn, contact will be ignored.</span></p>
+
+<p><span class="text-primary">roaming</span><br />
+<span class="m-l-2">Set to ‘true’ if you want to check roaming informations.</span></p>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-yourprices">
+			<h2>Your prices & consumption</h2>
+			<p>You can in one request get your prices for specific countries, balance and subscriptions.</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /view/yourprices/api.json
+{
+	"status": "success",
+	"success": "VIEW_YOURPRICES",
+	"yourprices": {
+		"prices": [
+			{
+				"country": "Denmark",
+				"dialcode": 45,
+				"price": {
+					"sms": 0.2,
+					"hlr": 0.08
+				}
+			},
+			{
+				"country": "Norway",
+				"dialcode": 47,
+				"price": {
+					"sms": 0.2,
+					"hlr": 0.08
+				}
+			},
+			{
+				"country": "Sweden",
+				"dialcode": 46,
+				"price": {
+					"sms": 0.2,
+					"hlr": 0.08
+				}
+			},
+			{
+				"country": "United Kingdom",
+				"dialcode": 44,
+				"price": {
+					"sms": 0.55,
+					"hlr": 0.08
+				}
+			},
+			...
+			{
+				"country": "Other countries",
+				"dialcode": 0,
+				"price": {
+					"sms": 0.6,
+					"hlr": 0.08
+				}
+			}
+		],
+		"credit": {
+			"balance": 95.96,
+			"timestamp": 1394399372
+		},
+		"subscription": {
+			"keywords": [
+				{
+					"gateway": 1919,
+					"keyword": "keyword",
+					"price": 120,
+					"shutdown": 0,
+					"paiduntil": 0
+				},
+				...
+			]
+		}
+	}
+}
+</pre></div>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-contacts">
+			<h2>Contacts</h2>
+			<p>It's easy to get a list of all your contacts.</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /view/contacts/api.json
+{
+	"status": "success",
+	"success": "VIEW_CONTACTS",
+	"contacts": [
+		{
+			"birthday": null,
+			"controlcontact": 100,
+			"dialcode": 45,
+			"email": null,
+			"fullname": "Fullname",
+			"groups": null,
+			"msisdn": 4512345678,
+			"number": 12345678,
+			"sex": null,
+			"street": null,
+			"zipcode": null
+		},
+		...
+	]
+}
+</pre></div>
+<p><br /></p>
+
+<p>Get one contact:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /view/contact/api.json?contact=100
+{
+	"status": "success",
+	"success": "VIEW_CONTACT",
+	"contact": {
+		"birthday": null,
+		"controlcontact": 100,
+		"dialcode": 45,
+		"email": null,
+		"fullname": "Fullname",
+		"groups": null,
+		"msisdn": 4512345678,
+		"number": 12345678,
+		"sex": null,
+		"street": null,
+		"zipcode": null
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<h3>Create contact</h3>
+<p>If no errors occurred, the response will be:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /contact/create/api.json?fullname=Fullname&amp;msisdn=4512345678
+{
+	"status": "success",
+	"success": "CREATE_CONTACT",
+	"contact": {
+		"fullname": "Fullname",
+		"msisdn": 4512345678,
+		"dialcode": 45,
+		"number": 12345678,
+		"controluser": 0,
+		"controlcontact": 0
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<p>Should an error occurr, you can typically find the reason in 'error':</p>
+<div class="highlight bg-success"><pre class="bg-success">
+{
+	"status": "error",
+	"error": "FULLNAME_EMPTY",
+	"contact": {
+		"fullname": null
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<h3>
+	<span class="label label-default">Required</span>
+</h3>
+
+<p><span class="text-primary">fullname</span><br />
+<span class="m-l-2">The contacts fullname.</span>
+<br /></p>
+
+<h3>
+	<span class="label label-default">Optional</span>
+</h3>
+
+<p><span class="text-primary">street</span><br />
+<span class="m-l-2">The contacts street.</span></p>
+
+<p><span class="text-primary">zipcode</span><br />
+<span class="m-l-2">The contacts zipcode.</span></p>
+
+<p><span class="text-primary">msisdn</span><br />
+<span class="m-l-2">The contacts MSISDN.</span></p>
+
+<p><span class="text-primary">email</span><br />
+<span class="m-l-2">The contacts e-mail.</span></p>
+
+<p><span class="text-primary">birthday</span><br />
+<span class="m-l-2">The contacts birthday. Unix timestamp (Timezone: Europe/Copenhagen).</span></p>
+
+<p><span class="text-primary">sex</span><br />
+<span class="m-l-2">The contacts sex. 1 = male and 2 = female.</span>
+<br />
+<br /></p>
+
+<h3>Assign groups to contact</h3>
+<p>You can assign a group to the contact:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /contact/addgroup/api.json?contact=100&amp;group=100
+{
+	"status": "success",
+	"success": "ADD_GROUP",
+	"addgroup": {
+		"groups": [
+			"100"
+		]
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<p>You can remove a group from the contact:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /contact/removegroup/api.json?contact=100&amp;group=100
+{
+	"status": "success",
+	"success": "REMOVE_GROUP",
+	"removegroup": {
+		"groups": [
+			"100"
+		]
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<h3>Delete contact</h3>
+<p>If no errors occurred, the response will be:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /contact/delete/api.json?contact=100
+{
+	"status": "success",
+	"success": "DELETE_CONTACT"
+}
+</pre></div>
+<p><br /></p>
+
+<p>Should an error occur, you can typically find the reason in 'error':</p>
+<div class="highlight bg-danger"><pre class="bg-danger">
+{
+	"status": "error",
+	"error": "EMPTY_CONTACT",
+	"contact": {
+		"contact": null
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<h3>
+	<span class="label label-default">Required</span>
+</h3>
+
+<p><span class="text-primary">contact</span><br />
+<span class="m-l-2">The contact ID.</span></p>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-groups">
+			<h2>Group</h2>
+			<p>It's easy to get a list of all your groups.</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /view/groups/api.json
+{
+	"status": "success",
+	"success": "VIEW_GROUPS",
+	"groups": [
+		{
+			"controlgroup": 100,
+			"name": "Groupname",
+			"contacts": [
+				{
+					"controlcontact": 100,
+					"fullname": "Fullname",
+					"street": null,
+					"zipcode": null,
+					"msisdn": 4512345678,
+					"dialcode": 45,
+					"number": 12345678,
+					"email": null,
+					"birthday": null,
+					"sex": null,
+					"groups": [
+						100,
+						126,
+						25
+					]
+				},
+				...
+			]
+		},
+		...
+	]
+}
+</pre></div>
+<p><br /></p>
+
+<p>Get one group:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /view/group/api.json?group=100
+{
+	"status": "success",
+	"success": "VIEW_GROUP",
+	"group": {
+		"controlgroup": 100,
+		"name": "Groupname",
+		"contacts": [
+			{
+				"controlcontact": 100,
+				"fullname": "Fullname",
+				"street": null,
+				"zipcode": null,
+				"msisdn": 4512345678,
+				"dialcode": 45,
+				"number": 12345678,
+				"email": null,
+				"birthday": null,
+				"sex": null,
+				"groups": [
+					100,
+					126,
+					25
+				]
+			},
+			...
+		]
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<h3>Create group</h3>
+<p>If no errors occurred, the response will be:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /group/create/api.json?name=Name
+{
+	"status": "success",
+	"success": "CREATE_GROUP",
+	"group": {
+		"name": "Name"
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<p>Should an error occur, you can typically find the reason in 'error':</p>
+<div class="highlight bg-danger"><pre class="bg-danger">
+{
+	"status": "error",
+	"error": "NAME_EMPTY",
+	"group": {
+		"name": null
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<h3>
+	<span class="label label-default">Required</span>
+</h3>
+
+<p><span class="text-primary">name</span><br />
+<span class="m-l-2">The groups name.</span>
+<br />
+<br /></p>
+
+<h3>Delete group</h3>
+<p>If no errors occurred, the response will be:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /group/delete/api.json?group=100
+{
+	"status": "success",
+	"success": "DELETE_GROUP"
+}
+</pre></div>
+<p><br /></p>
+
+<p>Should an error occur, you can typically find the reason in 'error':</p>
+<div class="highlight bg-danger"><pre class="bg-danger">
+{
+	"status": "error",
+	"error": "EMPTY_GROUP",
+	"group": {
+		"group": null
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<h3>
+	<span class="label label-default">Required</span>
+</h3>
+
+<p><span class="text-primary">group</span><br />
+<span class="m-l-2">The group ID.</span></p>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-checkkeyword">
+			<h2>Check keyword</h2>
+			<p>If no errors occurred, the response will be:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /buy/checkkeyword/api.json?gateway=1919&amp;keyword=pacman
+{
+	"status": "success",
+	"success": "KEYWORD_AVAILABLE",
+	"buy": {
+		"gateway": {
+			"controlgateway": 1,
+			"controluser": 1,
+			"gateway": 1919,
+			"local": false
+		},
+		"keyword": {
+			"keyword": "pacman",
+			"price": 120
+		},
+		"period": {
+			"start": 1397512800,
+			"end": 1400104800,
+			"price": 120
+		}
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<p>Should an error occur, you can typically find the reason in 'error':</p>
+<div class="highlight bg-danger"><pre class="bg-danger">
+{
+	"status": "error",
+	"error": "KEYWORD_EXISTS"
+}
+</pre></div>
+<p><br /></p>
+
+<h3>
+	<span class="label label-default">Required</span>
+</h3>
+
+<p><span class="text-primary">gateway</span><br />
+<span class="m-l-2">The gateway, typically 1919, or your hosted SIM-card MSISDN.</span></p>
+
+<p><span class="text-primary">keyword</span><br />
+<span class="m-l-2">The keyword you want to lookup.</span></p>
+
+		</div>
+
+		<br><br>
+	
+		<div id="402-buykeyword">
+			<h2>Buy keyword</h2>
+			<p>If no errors occurred, the response will be:</p>
+<div class="highlight bg-success"><pre class="bg-success">
+$ /buy/keyword/api.json?gateway=1919&amp;keyword=test
+{
+	"status": "success",
+	"success": "BUY_SUCCESFUL",
+	"buy": {
+		"price": 120,
+		"buy": 100
+	}
+}
+</pre></div>
+<p><br /></p>
+
+<p>
+	<strong>All call to 'buy/keyword' are final. You will receive an invoice if the price are greater than 0.00. You can check the price with the 'Check keyword'-endpoint.</strong>
+</p>
+
+<h3>
+	<span class="label label-default">Required</span>
+</h3>
+
+<p><span class="text-primary">gateway</span><br />
+<span class="m-l-2">The gateway, typically 1919, or your hosted SIM-card MSISDN.</span></p>
+
+<p><span class="text-primary">keyword</span><br />
+<span class="m-l-2">The keyword you want to lookup.</span></p>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-callback">
+			<h2>Callback</h2>
+			<p>You will receive a HTTP GET request to the provided callback-url.</p>
+<p>We will listen for HTTP 200 OK. If we receive nothing back or HTTP 404 Not Found (e.g. server offline) we will try every hour, but only 25 times including the first try.</p>
+
+<h3>
+	<span class="label label-default">Parameters for outgoing SMS</span>
+</h3>
+
+<p><span class="text-primary">msisdn</span><br />
+<span class="m-l-2">The recipient. Mobile number in international format fx. 4512345678</span></p>
+
+<p><span class="text-primary">dialcode</span><br />
+<span class="m-l-2">Mobile numbers dialcode</span></p>
+
+<p><span class="text-primary">number</span><br />
+<span class="m-l-2">Mobile number without dialcode</span></p>
+
+<p><span class="text-primary">status</span><br />
+<span class="m-l-2">Status code</span></p>
+
+<p><span class="text-primary">timestamp</span><br />
+<span class="m-l-2">The Unix timestamp (Timezone: Europe/Copenhagen) we received the request to send the SMS</span></p>
+
+<p><span class="text-primary">delivered</span><br />
+<span class="m-l-2">The Unix timestamp (Timezone: Europe/Copenhagen) when the SMS was received on the recipients phone</span></p>
+
+<p><span class="text-primary">smsid</span><br />
+<span class="m-l-2">Our internal SMS id</span>
+<br /></p>
+
+<h3>
+	<span class="label label-default">Parameters for ingoing SMS</span>
+</h3>
+
+<p><span class="text-primary">msisdn</span><br />
+<span class="m-l-2">The recipient. Mobile number in international format fx. 4512345678</span></p>
+
+<p><span class="text-primary">dialcode</span><br />
+<span class="m-l-2">Mobile numbers dialcode</span></p>
+
+<p><span class="text-primary">number</span><br />
+<span class="m-l-2">Mobile number without dialcode</span></p>
+
+<p><span class="text-primary">timestamp</span><br />
+<span class="m-l-2">The Unix timestamp (Timezone: Europe/Copenhagen) we received the SMS</span></p>
+
+<p><span class="text-primary">gateway</span><br />
+<span class="m-l-2">The gateway number the SMS was received at</span></p>
+
+<p><span class="text-primary">keyword</span><br />
+<span class="m-l-2">The keyword which received the SMS</span></p>
+
+<p><span class="text-primary">network</span><br />
+<span class="m-l-2">The senders network name</span></p>
+
+<p><span class="text-primary">text</span><br />
+<span class="m-l-2">The senders message to your keyword</span></p>
+
+<p><span class="text-primary">mms</span><br />
+<span class="m-l-2">Comma-separated list of direct URL’s to the file</span></p>
+
+		</div>
+
+		<br><br>
+	
+		<div id="401-statuscodes">
+			<h2>Status codes</h2>
+			<p><span class="text-primary">1-11</span><br />
+<span class="m-l-2">Internal termination</span></p>
+
+<p><span class="text-primary">12</span><br />
+<span class="m-l-2">Number does not exists</span>
+<br />
+<span class="m-l-2">The number has not been assigned to a subscriber</span></p>
+
+<p><span class="text-primary">13</span><br />
+<span class="m-l-2">Number invalid</span>
+<br />
+<span class="m-l-2">The number is probably defined wrongly</span></p>
+
+<p><span class="text-primary">14</span><br />
+<span class="m-l-2">Number blacklisted</span></p>
+
+<p><span class="text-primary">22-99</span><br />
+<span class="m-l-2">External termination</span></p>
+
+<p><span class="text-primary">100</span><br />
+<span class="m-l-2">The number is roaming</span>
+<br />
+<span class="m-l-2">Happens when you have defined that if number is roaming, the SMS should cancel</span></p>
+
+<p><span class="text-primary">150</span><br />
+<span class="m-l-2">Delivered</span></p>
+
+		</div>
+
+		<br><br>
+	
+</div>
+	<div class="col-sm-2 hidden-sm-down follow-scroll">
+	<ul class="nav">
+		
+		
+			
+				<li><a href="#401-apiendpoint"><strong>API endpoint</strong></a></li>
+			
+		
+			
+				<li><a href="#401-login">Login</a></li>
+			
+		
+			
+				<li><a href="#401-logout">Logout</a></li>
+			
+		
+			
+				<li><a href="#401-user">User</a></li>
+			
+		
+			
+				<li><a href="#401-outbox">Outbox</a></li>
+			
+		
+			
+				<li><a href="#401-inbox">Inbox</a></li>
+			
+		
+			
+				<li><a href="#401-sendsms">Send SMS</a></li>
+			
+		
+			
+				<li><a href="#401-hlrlookup">HLR lookup</a></li>
+			
+		
+			
+				<li><a href="#401-yourprices">Your prices & consumption</a></li>
+			
+		
+			
+				<li><a href="#401-contacts">Contacts</a></li>
+			
+		
+			
+				<li><a href="#401-groups">Group</a></li>
+			
+		
+			
+				<li><a href="#401-checkkeyword">Check keyword</a></li>
+			
+		
+			
+				<li><a href="#402-buykeyword">Buy keyword</a></li>
+			
+		
+			
+				<li><a href="#401-callback">Callback</a></li>
+			
+		
+			
+				<li><a href="#401-statuscodes">Status codes</a></li>
+			
+		
+	</ul>
+</div>
+
+</div>
+		</div>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
+<script src="/assets/js/javascript.js"></script>
+	</body>
+</html>

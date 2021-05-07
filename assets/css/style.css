@@ -1,0 +1,41 @@
+html {
+    overflow-y: scroll;
+    position: relative;
+    min-height: 100%;
+}
+body, html {
+    color: #333;
+    font-family: Lato,Arial,Helvetica,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+}
+body { font-size: 90% }
+h2 { border-bottom: .0625rem #ddd solid }
+pre {
+    overflow: none!important;
+    margin-bottom: 0;
+}
+.container { max-width: 61.25rem }
+.jumbotron.intro {
+    background-color: #21759A;
+    color: #dbdbdb;
+}
+.nav>li>a {
+    color: #99979c;
+    cursor: pointer;
+}
+.jumbotron { border-radius: 0!important }
+.highlight {
+    padding: 1rem;
+    background-color: #f7f7f9;
+}
+.bg-success {
+    background-color: #dff0d8!important;
+    color: #333!important;
+}
+.bg-danger {
+    background-color: #f2dede!important;
+    color: #333!important;
+}
